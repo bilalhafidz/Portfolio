@@ -92,7 +92,7 @@ export default function LoadingScreen() {
           INITIALIZING SYSTEM
         </div>
         <div className="text-[#F8FAFC]/30 font-mono text-xs tracking-widest">
-          LOADING PORTFOLIO v2.0
+          LOADING PORTFOLIO
         </div>
       </div>
 

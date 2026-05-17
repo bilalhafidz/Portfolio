@@ -94,7 +94,7 @@ export default function Footer() {
                     width={40}
                     height={40}
                     className="object-contain"
-                  />
+                  />ck w-0.5 h-6 bg-[#00D9FF] animate-blink"
                 </div>
               </div>
               <span

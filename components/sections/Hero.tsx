@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import {
-  PhoneIcon,
-  Mail,
-  ArrowDown,
-  ExternalLink,
-} from "lucide-react";
+import { PhoneIcon, Mail, ArrowDown, ExternalLink } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 
@@ -162,7 +157,7 @@ export default function Hero() {
                 {typedText}
               </span>
               <span
-                className="inline-block w-0.5 h-6 bg-[#00D9FF] animate-blink"
+                className="hidden sm:inline-block w-0.5 h-6 bg-[#00D9FF] animate-blink"
                 style={{ boxShadow: "0 0 8px #00D9FF" }}
               />
             </motion.div>
