@@ -99,11 +99,7 @@ const PROJECTS: Project[] = [
     categoryLabel: "Security Research",
     desc: "An investigative bot designed to assist in the process of identifying perpetrators through a controlled feed page that concisely displays location data, camera information, access times, and technical traces.",
     role: "Controlled investigation dashboard",
-    tech: [
-      "PHP",
-      "Telegram Bot",
-      "Geolocation API",
-    ],
+    tech: ["PHP", "Telegram Bot", "Geolocation API"],
     gradient: "from-[#F97316] via-[#EF4444] to-[#EC4899]",
     icon: Camera,
     thumbnail: "/projects/phishing-geolocation-cam/thumbnail.png",
@@ -192,7 +188,14 @@ const PROJECTS: Project[] = [
     categoryLabel: "Reporting",
     desc: "There are issues with the SPPG reporting and monitoring website, ranging from delays in distribution, food quality, and taste to inadequate portion validation.",
     role: "SPPG issue reporting dashboard",
-    tech: ["React.js", "TypeScript", "MySQL", "CodeIgniter", "Chart.js", "Tailwind CSS"],
+    tech: [
+      "React.js",
+      "TypeScript",
+      "MySQL",
+      "CodeIgniter",
+      "Chart.js",
+      "Tailwind CSS",
+    ],
     gradient: "from-[#10B981] via-[#22D3EE] to-[#2563EB]",
     icon: LayoutDashboard,
     thumbnail: "/projects/mbg-system/thumbnail.png",
@@ -313,6 +316,34 @@ export default function Projects() {
   const [filter, setFilter] = useState<"all" | ProjectCategory>("all");
   const [selected, setSelected] = useState<Project | null>(null);
   const [activeShot, setActiveShot] = useState(0);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const scrollY = window.scrollY;
+
+    const originalBodyPosition = document.body.style.position;
+    const originalBodyTop = document.body.style.top;
+    const originalBodyWidth = document.body.style.width;
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.position = originalBodyPosition;
+      document.body.style.top = originalBodyTop;
+      document.body.style.width = originalBodyWidth;
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [selected]);
 
   const filtered =
     filter === "all"
@@ -490,232 +521,218 @@ export default function Projects() {
           </AnimatePresence>
         </motion.div>
       </div>
-
       <AnimatePresence>
         {selected && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center overflow-y-auto p-3 sm:p-5"
-            style={{
-              background: "rgba(0,0,0,0.84)",
-              backdropFilter: "blur(14px)",
-            }}
+            className="fixed inset-0 z-[200] overflow-hidden bg-black/85 backdrop-blur-xl md:flex md:items-center md:justify-center md:p-5"
             onClick={() => setSelected(null)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 24 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="glass-navy neon-border my-6 w-full max-w-6xl overflow-hidden rounded-3xl"
+              initial={{ opacity: 0, y: 80, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 80, scale: 0.98 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+              className="glass-navy neon-border fixed inset-x-0 bottom-0 flex max-h-[92svh] flex-col overflow-hidden rounded-t-[28px] md:relative md:inset-auto md:my-6 md:max-h-[88vh] md:w-full md:max-w-6xl md:rounded-3xl"
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="flex flex-col gap-4 border-b border-white/10 p-5 sm:flex-row sm:items-start sm:justify-between sm:p-6">
-                <div className="flex gap-4">
-                  <div
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${selected.gradient} shadow-lg`}
-                  >
-                    {(() => {
-                      const SelectedIcon = selected.icon;
-                      return <SelectedIcon size={26} className="text-white" />;
-                    })()}
-                  </div>
+              <div className="flex shrink-0 flex-col border-b border-white/10 bg-[#020617]/80 px-4 pb-4 pt-3 backdrop-blur-xl md:px-6 md:py-5">
+                <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-white/20 md:hidden" />
 
-                  <div>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
                     <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <span className="tag text-[10px]">
+                      <span className="tag text-[9px] md:text-[10px]">
                         {selected.categoryLabel.toUpperCase()}
                       </span>
-                      <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[10px] text-white/40">
+                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] text-white/40 md:text-[10px]">
                         Screenshot Preview
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white sm:text-2xl">
+                    <h3 className="truncate text-lg font-bold text-white md:text-2xl">
                       {selected.title}
                     </h3>
 
-                    <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[#F8FAFC]/55">
+                    <p className="mt-1 line-clamp-2 max-w-3xl text-xs leading-relaxed text-[#F8FAFC]/50 md:mt-2 md:text-sm">
                       {selected.desc}
                     </p>
                   </div>
-                </div>
 
-                <button
-                  onClick={() => setSelected(null)}
-                  className="self-end rounded-xl border border-white/10 bg-white/[0.03] p-2 text-white/45 transition-colors hover:text-white sm:self-start"
-                  id="project-modal-close"
-                  aria-label="Close project preview"
-                >
-                  <X size={20} />
-                </button>
+                  <button
+                    onClick={() => setSelected(null)}
+                    className="shrink-0 rounded-xl border border-white/10 bg-white/[0.04] p-2 text-white/50 transition-colors hover:text-white"
+                    id="project-modal-close"
+                    aria-label="Close project preview"
+                  >
+                    <X size={19} />
+                  </button>
+                </div>
               </div>
 
-              <div className="grid gap-6 p-5 lg:grid-cols-[0.34fr_0.66fr] lg:p-6">
-                <div className="space-y-5">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <p className="mb-3 text-xs font-mono uppercase tracking-[0.24em] text-[#F8FAFC]/30">
-                      Tech Stack
-                    </p>
+              <div
+                className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 md:p-6"
+                style={{ WebkitOverflowScrolling: "touch" }}
+              >
+                <div className="grid gap-5 md:grid-cols-[0.34fr_0.66fr] md:gap-6">
+                  <div className="order-2 space-y-4 md:order-1 md:space-y-5">
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-5">
+                      <p className="mb-3 text-[10px] font-mono uppercase tracking-[0.22em] text-[#F8FAFC]/30 md:text-xs">
+                        Screenshots
+                      </p>
 
-                    <div className="flex flex-wrap gap-2">
-                      {selected.tech.map((tech) => (
-                        <span key={tech} className="tag">
-                          {tech}
-                        </span>
-                      ))}
+                      <div className="flex gap-2 overflow-x-auto pb-1 md:flex-col md:overflow-visible md:pb-0">
+                        {selected.screenshots.map((shot, index) => (
+                          <button
+                            key={shot.src}
+                            onClick={() => setActiveShot(index)}
+                            className={`shrink-0 rounded-xl border px-3 py-2 text-left text-xs transition-all md:w-full ${
+                              activeShot === index
+                                ? "border-[rgba(0,217,255,0.35)] bg-[rgba(0,217,255,0.12)] text-[#00D9FF]"
+                                : "border-white/10 bg-white/[0.03] text-white/45 hover:border-white/20 hover:text-white"
+                            }`}
+                          >
+                            {shot.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <p className="mb-3 text-xs font-mono uppercase tracking-[0.24em] text-[#F8FAFC]/30">
-                      Snapshot
-                    </p>
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-5">
+                      <p className="mb-3 text-[10px] font-mono uppercase tracking-[0.22em] text-[#F8FAFC]/30 md:text-xs">
+                        Tech Stack
+                      </p>
 
-                    <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                      <div className="flex flex-wrap gap-2">
+                        {selected.tech.map((tech) => (
+                          <span key={tech} className="tag text-[10px]">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 md:grid-cols-1 md:gap-3">
                       {selected.metrics.map((metric) => (
                         <div
                           key={metric.label}
-                          className="rounded-xl border border-white/10 bg-black/20 p-4"
+                          className="rounded-xl border border-white/10 bg-white/[0.03] p-3 md:p-4"
                         >
-                          <p className="text-[10px] uppercase tracking-widest text-white/35">
+                          <p className="truncate text-[9px] uppercase tracking-widest text-white/35 md:text-[10px]">
                             {metric.label}
                           </p>
-                          <p className="mt-1 text-sm font-semibold text-white">
+                          <p className="mt-1 truncate text-xs font-semibold text-white md:text-sm">
                             {metric.value}
                           </p>
                         </div>
                       ))}
                     </div>
-                  </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <p className="mb-3 text-xs font-mono uppercase tracking-[0.24em] text-[#F8FAFC]/30">
-                      Screenshots
-                    </p>
+                    <div className="hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:block">
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/35">
+                          Preview Status
+                        </p>
 
-                    <div className="flex flex-wrap gap-2 lg:flex-col">
-                      {selected.screenshots.map((shot, index) => (
-                        <button
-                          key={shot.src}
-                          onClick={() => setActiveShot(index)}
-                          className={`rounded-xl border px-3 py-2 text-left text-xs transition-all ${
-                            activeShot === index
-                              ? "border-[rgba(0,217,255,0.35)] bg-[rgba(0,217,255,0.12)] text-[#00D9FF]"
-                              : "border-white/10 bg-white/[0.03] text-white/45 hover:border-white/20 hover:text-white"
-                          }`}
-                        >
-                          {shot.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#020617] shadow-2xl">
-                    <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
+                        {selected.category === "ecommerce" ? (
+                          <Globe2 size={16} className="text-[#00D9FF]" />
+                        ) : selected.category === "security" ? (
+                          <ShieldCheck size={16} className="text-[#00D9FF]" />
+                        ) : selected.category === "monitoring" ? (
+                          <Activity size={16} className="text-[#00D9FF]" />
+                        ) : selected.category === "automation" ? (
+                          <Bot size={16} className="text-[#00D9FF]" />
+                        ) : (
+                          <MapPin size={16} className="text-[#00D9FF]" />
+                        )}
                       </div>
 
-                      <p className="truncate text-[10px] font-mono uppercase tracking-[0.25em] text-white/35">
-                        {selected.screenshots[activeShot].label}
-                      </p>
-                    </div>
+                      <div className="grid gap-3">
+                        <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                          <p className="text-[10px] text-white/35">
+                            Current View
+                          </p>
+                          <p className="mt-1 truncate text-xs font-semibold text-white">
+                            {selected.screenshots[activeShot].label}
+                          </p>
+                        </div>
 
-                    <ProjectImage
-                      src={selected.screenshots[activeShot].src}
-                      alt={`${selected.title} - ${selected.screenshots[activeShot].label}`}
-                      gradient={selected.gradient}
-                      icon={selected.icon}
-                      className="aspect-[16/10] w-full sm:aspect-video"
-                      imageClassName="object-contain"
-                      fallbackLabel="Screenshot belum tersedia"
-                    />
+                        <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                          <p className="text-[10px] text-white/35">
+                            Preview Type
+                          </p>
+                          <p className="mt-1 text-xs font-semibold text-white">
+                            Real Screenshot
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between gap-3">
-                    <button
-                      onClick={prevShot}
-                      className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-white/55 transition-colors hover:text-white"
-                      aria-label="Previous screenshot"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
+                  <div className="order-1 space-y-3 md:order-2 md:space-y-4">
+                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#020617] shadow-2xl">
+                      <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-white/[0.03] px-3 py-2.5 md:px-4 md:py-3">
+                        <div className="flex items-center gap-1.5 md:gap-2">
+                          <span className="h-2 w-2 rounded-full bg-red-400/80 md:h-2.5 md:w-2.5" />
+                          <span className="h-2 w-2 rounded-full bg-yellow-400/80 md:h-2.5 md:w-2.5" />
+                          <span className="h-2 w-2 rounded-full bg-emerald-400/80 md:h-2.5 md:w-2.5" />
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                      {selected.screenshots.map((shot, index) => (
-                        <button
-                          key={shot.src}
-                          onClick={() => setActiveShot(index)}
-                          className={`h-2.5 rounded-full transition-all ${
-                            activeShot === index
-                              ? "w-8 bg-[#00D9FF]"
-                              : "w-2.5 bg-white/20 hover:bg-white/40"
-                          }`}
-                          aria-label={`Open ${shot.label}`}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={nextShot}
-                      className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-white/55 transition-colors hover:text-white"
-                      aria-label="Next screenshot"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
-                  </div>
-
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/35">
-                        Preview Status
-                      </p>
-                      {selected.category === "ecommerce" ? (
-                        <Globe2 size={16} className="text-[#00D9FF]" />
-                      ) : selected.category === "security" ? (
-                        <ShieldCheck size={16} className="text-[#00D9FF]" />
-                      ) : selected.category === "monitoring" ? (
-                        <Activity size={16} className="text-[#00D9FF]" />
-                      ) : selected.category === "automation" ? (
-                        <Bot size={16} className="text-[#00D9FF]" />
-                      ) : (
-                        <MapPin size={16} className="text-[#00D9FF]" />
-                      )}
-                    </div>
-
-                    <div className="grid gap-3 sm:grid-cols-3">
-                      <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                        <p className="text-[10px] text-white/35">
-                          Current View
-                        </p>
-                        <p className="mt-1 truncate text-xs font-semibold text-white">
+                        <p className="truncate text-[9px] font-mono uppercase tracking-[0.18em] text-white/35 md:text-[10px] md:tracking-[0.25em]">
                           {selected.screenshots[activeShot].label}
                         </p>
                       </div>
 
-                      <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                        <p className="text-[10px] text-white/35">
-                          Preview Type
-                        </p>
-                        <p className="mt-1 text-xs font-semibold text-white">
-                          Real Screenshot
-                        </p>
+                      <ProjectImage
+                        src={selected.screenshots[activeShot].src}
+                        alt={`${selected.title} - ${selected.screenshots[activeShot].label}`}
+                        gradient={selected.gradient}
+                        icon={selected.icon}
+                        className="aspect-[4/3] w-full sm:aspect-video md:aspect-[16/10]"
+                        imageClassName="object-contain"
+                        fallbackLabel="Screenshot belum tersedia"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-3">
+                      <button
+                        onClick={prevShot}
+                        className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/55 transition-colors hover:text-white"
+                        aria-label="Previous screenshot"
+                      >
+                        <ChevronLeft size={18} />
+                      </button>
+
+                      <div className="flex items-center gap-2">
+                        {selected.screenshots.map((shot, index) => (
+                          <button
+                            key={shot.src}
+                            onClick={() => setActiveShot(index)}
+                            className={`h-2.5 rounded-full transition-all ${
+                              activeShot === index
+                                ? "w-8 bg-[#00D9FF]"
+                                : "w-2.5 bg-white/20 hover:bg-white/40"
+                            }`}
+                            aria-label={`Open ${shot.label}`}
+                          />
+                        ))}
                       </div>
 
-                      <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                        <p className="text-[10px] text-white/35">Navigation</p>
-                        <p className="mt-1 text-xs font-semibold text-white">
-                          Interactive
-                        </p>
-                      </div>
+                      <button
+                        onClick={nextShot}
+                        className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/55 transition-colors hover:text-white"
+                        aria-label="Next screenshot"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
                     </div>
+
+                    <p className="text-center text-[10px] leading-relaxed text-white/30 md:hidden">
+                      Swipe area locked. Scroll only happens inside this
+                      preview.
+                    </p>
                   </div>
                 </div>
               </div>

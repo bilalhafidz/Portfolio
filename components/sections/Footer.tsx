@@ -90,9 +90,9 @@ export default function Footer() {
                 <div className="relative w-[18px] h-[18px]">
                   <Image
                     src="/logo.png"
-                    alt="Bilal Logo"
-                    fill
-                    priority
+                    alt="Bilal Hafidz Logo"
+                    width={40}
+                    height={40}
                     className="object-contain"
                   />
                 </div>
