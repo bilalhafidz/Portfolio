@@ -30,17 +30,39 @@
     color: #f8fafc;
     font-family: var(--font-space-grotesk), system-ui, sans-serif;
     overflow-x: hidden;
-    cursor: none;
   }
 
-  @media (max-width: 768px) {
+  @media (hover: hover) and (pointer: fine) {
     body {
-      cursor: auto;
+      cursor: none;
+    }
+  }
+
+  @media (hover: none), (pointer: coarse), (max-width: 768px) {
+    html,
+    body,
+    body *,
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    [role="button"] {
+      cursor: auto !important;
     }
 
     .custom-cursor,
-    .custom-cursor-ring {
+    .custom-cursor-dot,
+    .custom-cursor-ring,
+    .custom-cursor-glow,
+    .cursor-dot,
+    .cursor-ring,
+    .cursor-glow {
       display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
   }
 
